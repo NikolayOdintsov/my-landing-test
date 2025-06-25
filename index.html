@@ -1,7 +1,32 @@
-<form action="https://hook.eu2.make.com/ucl13cjsb6riqnsmdmpa0b9r7p2vrwjk" method="POST">
-  <label>Email: <input name="email" type="email" required></label>
+<form id="joinForm">
+  <label>Email: <input name="email" type="email" required></label><br>
   <label>
     <input type="checkbox" name="join_community" value="yes"> Join community?
-  </label>
+  </label><br>
   <button type="submit">Submit</button>
+  <div id="statusMessage" style="display:none; margin-top: 10px;">Sending...</div>
 </form>
+
+<script>
+  const form = document.getElementById("joinForm");
+  const status = document.getElementById("statusMessage");
+
+  form.addEventListener("submit", function(event) {
+    event.preventDefault(); // Prevent default form submission
+
+    status.style.display = "block"; // Show "Sending..." message
+
+    // Send form data manually using fetch
+    const formData = new FormData(form);
+    fetch("https://hook.eu2.make.com/ucl13cjsb6riqnsmdmpa0b9r7p2vrwjk", {
+      method: "POST",
+      body: formData
+    });
+
+    // Wait 2 seconds, then reset form
+    setTimeout(() => {
+      form.reset();
+      status.style.display = "none";
+    }, 2000);
+  });
+</script>
