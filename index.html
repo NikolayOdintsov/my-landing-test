@@ -10,6 +10,7 @@
       padding: 20px;
       line-height: 1.5;
     }
+
     form {
       display: flex;
       flex-wrap: wrap;
@@ -17,20 +18,24 @@
       align-items: center;
       max-width: 600px;
     }
+
     label {
       display: flex;
       align-items: center;
       flex: 1 1 auto;
     }
+
     input[type="email"] {
       padding: 8px;
       margin-left: 5px;
       flex: 1;
       min-width: 200px;
     }
+
     input[type="checkbox"] {
       margin-right: 5px;
     }
+
     button {
       padding: 10px 16px;
       background-color: #2D9CDB;
@@ -40,9 +45,26 @@
       cursor: pointer;
       flex-shrink: 0;
     }
+
     #statusMessage {
       margin-left: 10px;
       color: #2D9CDB;
+      display: none;
+    }
+
+    #popup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #2D9CDB;
+      color: white;
+      padding: 20px 30px;
+      border-radius: 8px;
+      font-size: 18px;
+      z-index: 1000;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
     }
 
     @media (max-width: 600px) {
@@ -72,12 +94,15 @@
 
     <button type="submit">Submit</button>
 
-    <div id="statusMessage" style="display:none;">Sending...</div>
+    <div id="statusMessage">Sending...</div>
   </form>
+
+  <div id="popup">✅ Email sent!</div>
 
   <script>
     const form = document.getElementById("joinForm");
     const status = document.getElementById("statusMessage");
+    const popup = document.getElementById("popup");
 
     form.addEventListener("submit", function(event) {
       event.preventDefault();
@@ -87,12 +112,25 @@
       fetch("https://hook.eu2.make.com/ucl13cjsb6riqnsmdmpa0b9r7p2vrwjk", {
         method: "POST",
         body: formData
-      });
+      }).then(() => {
+        popup.innerText = "✅ Email sent!";
+        popup.style.background = "#2D9CDB";
+        popup.style.display = "block";
 
-      setTimeout(() => {
-        form.reset();
-        status.style.display = "none";
-      }, 2000);
+        setTimeout(() => {
+          popup.style.display = "none";
+          form.reset();
+          status.style.display = "none";
+        }, 1500);
+      }).catch(() => {
+        popup.innerText = "❌ Failed to send.";
+        popup.style.background = "#d32f2f";
+        popup.style.display = "block";
+        setTimeout(() => {
+          popup.style.display = "none";
+          status.style.display = "none";
+        }, 2000);
+      });
     });
   </script>
 
