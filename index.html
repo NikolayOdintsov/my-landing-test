@@ -1,35 +1,100 @@
-<form id="joinForm" style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
-  <label style="display: flex; align-items: center;">
-    Email: <input name="email" type="email" required style="margin-left: 5px;">
-  </label>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Join Early Access</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      line-height: 1.5;
+    }
+    form {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      max-width: 600px;
+    }
+    label {
+      display: flex;
+      align-items: center;
+      flex: 1 1 auto;
+    }
+    input[type="email"] {
+      padding: 8px;
+      margin-left: 5px;
+      flex: 1;
+      min-width: 200px;
+    }
+    input[type="checkbox"] {
+      margin-right: 5px;
+    }
+    button {
+      padding: 10px 16px;
+      background-color: #2D9CDB;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    #statusMessage {
+      margin-left: 10px;
+      color: #2D9CDB;
+    }
 
-  <label style="display: flex; align-items: center;">
-    <input type="checkbox" name="join_community" value="yes" style="margin-right: 5px;"> Join community?
-  </label>
+    @media (max-width: 600px) {
+      form {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      label, button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
 
-  <button type="submit">Submit</button>
+  <h2>Join the Waitlist</h2>
 
-  <div id="statusMessage" style="display:none; margin-left: 10px;">Sending...</div>
-</form>
+  <form id="joinForm">
+    <label>Email:
+      <input name="email" type="email" required />
+    </label>
 
-<script>
-  const form = document.getElementById("joinForm");
-  const status = document.getElementById("statusMessage");
+    <label>
+      <input type="checkbox" name="join_community" value="yes" />
+      Join community?
+    </label>
 
-  form.addEventListener("submit", function(event) {
-    event.preventDefault();
+    <button type="submit">Submit</button>
 
-    status.style.display = "block";
+    <div id="statusMessage" style="display:none;">Sending...</div>
+  </form>
 
-    const formData = new FormData(form);
-    fetch("https://hook.eu2.make.com/ucl13cjsb6riqnsmdmpa0b9r7p2vrwjk", {
-      method: "POST",
-      body: formData
+  <script>
+    const form = document.getElementById("joinForm");
+    const status = document.getElementById("statusMessage");
+
+    form.addEventListener("submit", function(event) {
+      event.preventDefault();
+      status.style.display = "block";
+
+      const formData = new FormData(form);
+      fetch("https://hook.eu2.make.com/ucl13cjsb6riqnsmdmpa0b9r7p2vrwjk", {
+        method: "POST",
+        body: formData
+      });
+
+      setTimeout(() => {
+        form.reset();
+        status.style.display = "none";
+      }, 2000);
     });
+  </script>
 
-    setTimeout(() => {
-      form.reset();
-      status.style.display = "none";
-    }, 2000);
-  });
-</script>
+</body>
+</html>
